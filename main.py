@@ -49,7 +49,7 @@ def switch_vpn(icon: pystray.Icon, item: pystray.MenuItem) -> None:
         os.system(f'notify-send "VPN Manager" "{message}"')
 
 
-vpn_dir = "/home/artem/vpn"
+vpn_dir = os.path.join(os.path.expanduser('~'), "vpn")
 menu_items = []
 for filename in os.listdir(vpn_dir):
     if filename.endswith(".conf"):
@@ -58,7 +58,8 @@ menu_items.append(pystray.MenuItem("Disconnect", switch_vpn))
 menu_items.append(pystray.MenuItem("Exit", switch_vpn))
 
 menu = pystray.Menu(*menu_items)
-icon = Image.open("icon.png")
+app_dir = os.path.dirname(os.path.abspath(__file__))
+icon = Image.open(os.path.join(app_dir, "icon.png"))
 systray = pystray.Icon("VPN Manager", icon, menu=menu)
 
 systray.run()
